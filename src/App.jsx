@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import './App.css'
 
 const App = () => {
   const [team, setTeam] = useState([]);
-  const [moent, setMoney] = useState(100)
+  const [money, setMoney] = useState(100)
   const [zombieFighters, setZombieFighters] = useState(
 
     [
@@ -90,9 +91,55 @@ const App = () => {
 
   )
 
-  return (
-    <h1>Hello world!</h1>
-  );
+ // add this fighter to the team unless theyre already there 
+const addToTeam = (fighter) => {
+    if (!team.find(f => f.id === fighter.id)) {
+      //making array
+      setTeam([...team, fighter])
+    }
+    
+
+function handleAddFighter(fighter) {
+ 
+     if (money >= fighter.price) {
+      setMoney(money - fighter.price) 
+      setTeam([...team,fighter])
+      setZombieFighters(addToTeam)
+  }
+  else{
+      console.log('not enought money :(')
+  }
+  
+
 }
+  }
+
+//  each one in the array called fighter
+  return (
+    <div>
+      <h1>Zombie Fighters</h1>
+      <p>Money: ${money} </p>
+      <ul>
+        {zombieFighters.map(fighter => (
+          <li key={fighter.id}>
+
+            <img src={fighter.img} alt={fighter.name} />
+            <h2>{fighter.name}</h2>
+            <p>Price: ${fighter.price}</p>
+            <p>Strength: {fighter.strength}</p>
+            <p>Agility: {fighter.agility}</p>
+            <button onClick={() => addToTeam(fighter)}>Add</button>
+          </li>
+        ))}
+      </ul>
+
+    </div>
+  )
+}
+
+
+
+
+
 
 export default App;
